@@ -17,7 +17,7 @@ func same_check(slice1 []string, slice2 []string) bool {
 			for _, s2 := range slice2 {
 				if strings.Contains(s1, s2) {
 					found = true
-					break
+					break //to break through this for loop
 				}
 			}
 			// String found. We add it to diff slice and make same to true
@@ -63,7 +63,7 @@ type Product []struct {
 	AvailableColor  []string `json:"availableColor"`
 	AvailableSize   []string `json:"availableSize"`
 	ProductID       string   `json:"productId"`
-	Productfeature  struct {
+	Productfeature  struct {             //modified this from slice to struct
 		Length   string `json:"Length"`
 		Fabric   string `json:"Fabric"`
 		Occasion string `json:"Occasion"`
