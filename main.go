@@ -3,20 +3,23 @@ package main
 import ("fmt" // for printing
   "encoding/json" // for encoding json to struct or we can se marshing and unmarshing
   "io/ioutil" //for reading and writing files
-  "net/http") //for create server
+  "net/http"
+  "strings"
+  "log") //for create server
 
 //function to check to slice and if their strings matches then it will return true, otherwise it will return false
 func same_check(slice1 []string, slice2 []string) bool {
 	var diff []string
 	same := false
-
+  //fmt.Print(slice1," : ")
+  //fmt.Println(slice2)
 	// Loop two times, first to find slice1 strings not in slice2,
 	// second loop to find slice2 strings not in slice1
 	for i := 0; i < 2; i++ {
 		for _, s1 := range slice1 {
 			found := false
 			for _, s2 := range slice2 {
-				if s1 == s2 {
+				if strings.Contains(s1, s2) {
 					found = true
 					break
 				}
@@ -55,17 +58,21 @@ type User []struct {
 }
 // product struct for product.json
 type Product []struct {
-	ImageURLs        []string `json:"imageURLs"`
-	ProductTitle     string   `json:"productTitle"`
-	Price            int      `json:"price"`
-	DiscountedPrice  int      `json:"discountedPrice"`
-	DiscountPer      string   `json:"discountPer"`
-	MarketplaceName  string   `json:"marketplaceName"`
-	AffliateLink     string   `json:"affliateLink"`
-	AvailableColor   []string `json:"availableColor"`
-	AvailableSize    []string `json:"availableSize"`
-	ProductID        string   `json:"productId"`
-	Productfeature   []string `json:"productfeature"`
+	ImageURLs       []string `json:"imageURLs"`
+	ProductTitle    string   `json:"productTitle"`
+	Price           int      `json:"price"`
+	DiscountedPrice int      `json:"discountedPrice"`
+	DiscountPer     string   `json:"discountPer"`
+	MarketplaceName string   `json:"marketplaceName"`
+	AffliateLink    string   `json:"affliateLink"`
+	AvailableColor  []string `json:"availableColor"`
+	AvailableSize   []string `json:"availableSize"`
+	ProductID       string   `json:"productId"`
+	Productfeature  struct {
+		Length   string `json:"Length"`
+		Fabric   string `json:"Fabric"`
+		Occasion string `json:"Occasion"`
+	} `json:"productfeature"`
 	ProductAttribute struct {
 		SuitableFor string `json:"Suitable For"`
 		Neck        string `json:"Neck"`
@@ -80,9 +87,9 @@ func main()  {
   //------------------------weights----------------------------------
   size_weight := 50
   color_weight := 20
-  //style_weight := 30
+  style_weight := 30
   product_weight := 0
-  total_weight := 70 //total weight of product if the weight of product is = to this means we have found our relevant product
+  total_weight := 100 //total weight of product if the weight of product is = to this means we have found our relevant product
   //-------------------------- xx------------------------------------
 
   //-------------reading user and product.json-----------------------
@@ -92,7 +99,7 @@ func main()  {
 
   var final_product int
   var found_product []byte
-
+  var product_style_slice []string
   //-----------------creating struct into variable-------------------
   var products Product
   var user1 User
@@ -117,12 +124,19 @@ func main()  {
       if (same_check(product.AvailableSize,user.PreferredSize)){
         product_weight += size_weight
       }
+      //appending string to slice because same_check take slice as a argument not a string
+      product_style_slice = append(product_style_slice, product.Productfeature.Occasion)
+      if (same_check(product_style_slice, user.PreferredStyle)) {
+        product_weight += style_weight
+      }
+
       //checking if product weight is greater then final_product weight or not if yes then we assign product_weight to final_product
       if product_weight > final_product{
         final_product = product_weight
         found_product, _ = json.Marshal(product) //now we parse the struct data of more weight product to json
       }
-      fmt.Println(product_weight)
+      fmt.Printf("Found dress with weight of %d of ProductID %s \n",product_weight,product.ProductID)
+      //to break through loop if product_weight is eqaul to product weight
       if product_weight == total_weight{
         break
       }
@@ -139,6 +153,6 @@ func main()  {
     fmt.Fprintf(w, string(found_product))
 })
   //listening to port 8080
-  http.ListenAndServe(":8080", nil)
+  log.Fatal(http.ListenAndServe(":8080", nil))
   //------------------------------------------xx----------------------------------------
 }
