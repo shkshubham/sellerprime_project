@@ -9,13 +9,13 @@
     "productTitle": "Vero Moda Women's Gathered Light Blue Dress",
     "price": 1995,
     "discountedPrice": 997,
-    "discountPer": "50%",
+    "discountPer": "50",
     "marketplaceName": "Flipkart",
     "affliateLink": "http://.........link",
     "availableColor": [
       "Gloden",
-      "White",
-      "Red"
+      "Red",
+      "White"
     ],
     "availableSize": [
       "M",
@@ -93,7 +93,7 @@
     "marketplaceName": "Flipkart",
     "affliateLink": "http://.........link",
     "availableColor": [
-      "Yellow",
+      "Black",
       "Green",
       "White"
     ],

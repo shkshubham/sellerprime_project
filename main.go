@@ -2,7 +2,8 @@ package main
 
 import ("fmt"
   "encoding/json"
-  "io/ioutil")
+  "io/ioutil"
+  "net/http")
 func same_check(slice1 []string, slice2 []string) bool {
 	var diff []string
 	same := false
@@ -36,7 +37,6 @@ func same_check(slice1 []string, slice2 []string) bool {
 
 
 }
-
 
 type User []struct {
 	UserID         string   `json:"userId"`
@@ -84,6 +84,7 @@ func main()  {
   user_data, _ := ioutil.ReadFile("user.json")
   product_data, _ := ioutil.ReadFile("product.json")
   var final_product int
+  var found_product []byte
   var user1 User
   json.Unmarshal(user_data,&user1)
 
@@ -101,10 +102,17 @@ func main()  {
       }
       if product_weight > final_product{
         final_product = product_weight
-          fmt.Println(product)
+        found_product, _ = json.Marshal(product)
       }
-      //fmt.Println(product_weight)
+      fmt.Println(product_weight)
       product_weight = 0
     }
   }
+
+http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-Type", "application/json")
+	fmt.Fprintf(w, string(found_product))
+})
+  http.ListenAndServe(":8080", nil)
+  fmt.Println(string(found_product))
 }
