@@ -1,0 +1,37 @@
+[
+  {
+
+     "userId": "1234",
+    "userName": "XYZ",
+    "userGeo": "Delhi",
+
+    "preferredSize": [
+      "M",
+      "L"
+    ],
+    "preferredColor": [
+      "Red",
+      "Black",
+      "Blue"
+    ],
+    "preferredStyle": [
+      "Indian Ethnic",
+      "Party Wear",
+      "Formal"
+    ],
+    "userInterest": [
+      "Sports: Cricket",
+      "Shopping: Always",
+      "Party: occasionally",
+      "brandPreference: No",
+      "Fit: Comfort"
+    ],
+    "userAttribute": {
+      "age": "26",
+      "height" :"5.10",
+      "bodyType": "Athletic",
+      "color" : "white",
+      "gender" : "female"
+    }
+  }
+]
