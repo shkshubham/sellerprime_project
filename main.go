@@ -1,13 +1,14 @@
 package main
 
-import ("fmt"
-  "encoding/json"
-  "io/ioutil"
-  "net/http")
+import ("fmt" // for printing
+  "encoding/json" // for encoding json to struct or we can se marshing and unmarshing
+  "io/ioutil" //for reading and writing files
+  "net/http") //for create server
+
+//function to check to slice and if their strings matches then it will return true, otherwise it will return false
 func same_check(slice1 []string, slice2 []string) bool {
 	var diff []string
 	same := false
-
 
 	// Loop two times, first to find slice1 strings not in slice2,
 	// second loop to find slice2 strings not in slice1
@@ -33,11 +34,9 @@ func same_check(slice1 []string, slice2 []string) bool {
 	}
   //fmt.Println(diff)
 	return same
-
-
-
 }
 
+// User struct for user.json
 type User []struct {
 	UserID         string   `json:"userId"`
 	UserName       string   `json:"userName"`
@@ -54,7 +53,7 @@ type User []struct {
 		Gender   string `json:"gender"`
 	} `json:"userAttribute"`
 }
-
+// product struct for product.json
 type Product []struct {
 	ImageURLs        []string `json:"imageURLs"`
 	ProductTitle     string   `json:"productTitle"`
@@ -76,43 +75,65 @@ type Product []struct {
 	RecommendedProduct []int  `json:"recommendedProduct"`
 }
 
+//main function
 func main()  {
+  //------------------------weights----------------------------------
   size_weight := 50
   color_weight := 20
   //style_weight := 30
   product_weight := 0
+  //-------------------------- xx------------------------------------
+
+  //-------------reading user and product.json
   user_data, _ := ioutil.ReadFile("user.json")
   product_data, _ := ioutil.ReadFile("product.json")
+  //---------------------------xx-------------------------------------
+
   var final_product int
   var found_product []byte
-  var user1 User
-  json.Unmarshal(user_data,&user1)
 
+  //creating struct into variable
   var products Product
-  json.Unmarshal(product_data,&products)
-  for _,user := range user1{
+  var user1 User
+  //---------------------------xx-----------------------------------
 
+
+  //unmarshing json to struct variable
+  json.Unmarshal(user_data,&user1)
+  json.Unmarshal(product_data,&products)
+  //----------------------------xx---------------------------------
+
+  //for loop for range of users as here is 1 user so it will run once only
+  for _,user := range user1{
+  //for loop for range of product as here is 3 products so it will run 3 times
     for _, product := range products{
 
+      //checking if slice of product.availableColor is = to user.PreferredColor if yes then we will get true as return
       if (same_check(product.AvailableColor,user.PreferredColor)){
-        product_weight += color_weight
+        product_weight += color_weight //assigning color weight to product weight
       }
+      //here checking size of product and user, if yes then it will get true as return
       if (same_check(product.AvailableSize,user.PreferredSize)){
         product_weight += size_weight
       }
+      //checking if product weight is greater then final_product weight or not if yes then we assign product_weight to final_product
       if product_weight > final_product{
         final_product = product_weight
-        found_product, _ = json.Marshal(product)
+        found_product, _ = json.Marshal(product) //now we parse the struct data of more weight product to json
       }
-      fmt.Println(product_weight)
       product_weight = 0
     }
   }
+  //------------------------------------xx----------------------------------------------
 
-http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+  //---------------------------starting http server-------------------------------------
+  http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+  //setting header of / url as json
   w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, string(found_product))
+  //writing the json data as string because it is of datatype byte and to write something on page then it should be string
+  fmt.Fprintf(w, string(found_product))
 })
+  //listening to port 8080
   http.ListenAndServe(":8080", nil)
-  fmt.Println(string(found_product))
+  //------------------------------------------xx----------------------------------------
 }
