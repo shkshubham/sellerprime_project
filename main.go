@@ -1,10 +1,42 @@
 package main
 
 import ("fmt"
-  "sort"
   "encoding/json"
-  "io/ioutil"
-  "strings")
+  "io/ioutil")
+func same_check(slice1 []string, slice2 []string) bool {
+	var diff []string
+	same := false
+
+
+	// Loop two times, first to find slice1 strings not in slice2,
+	// second loop to find slice2 strings not in slice1
+	for i := 0; i < 2; i++ {
+		for _, s1 := range slice1 {
+			found := false
+			for _, s2 := range slice2 {
+				if s1 == s2 {
+					found = true
+					break
+				}
+			}
+			// String not found. We add it to return slice
+			if found {
+				same = true
+				diff = append(diff, s1)
+			}
+		}
+		// Swap the slices, only if it was the first loop
+		if i == 0 {
+			slice1, slice2 = slice2, slice1
+		}
+	}
+  //fmt.Println(diff)
+	return same
+
+
+
+}
+
 
 type User []struct {
 	UserID         string   `json:"userId"`
@@ -45,62 +77,34 @@ type Product []struct {
 }
 
 func main()  {
-  //size_weight := 50
+  size_weight := 50
   color_weight := 20
   //style_weight := 30
   product_weight := 0
   user_data, _ := ioutil.ReadFile("user.json")
   product_data, _ := ioutil.ReadFile("product.json")
-
+  var final_product int
   var user1 User
   json.Unmarshal(user_data,&user1)
 
   var products Product
   json.Unmarshal(product_data,&products)
   for _,user := range user1{
-    sort.Strings(user.PreferredSize)
-    sort.Strings(user.PreferredColor)
-    sort.Strings(user.PreferredStyle)
-
-    //user_color := strings.Join(user.PreferredColor, " ")
-    //user_size := strings.Join(user.PreferredSize, " ")
-    //user_style := strings.Join(user.PreferredStyle, " ")
 
     for _, product := range products{
-      fmt.Println(product.ProductTitle)
-      fmt.Println(product.AvailableColor)
-      /*sort.Strings(product.AvailableColor)
-      sort.Strings(product.AvailableSize)
-      sort.Strings(product.Productfeature)
-      */
 
-      /*
-      fmt.Println(product.AvailableColor)
-      if (sort.SearchStrings(product.AvailableColor, "Blue")) <len(product.AvailableColor){
+      if (same_check(product.AvailableColor,user.PreferredColor)){
         product_weight += color_weight
       }
-      if (sort.SearchStrings(product.AvailableSize, user_size)) <len(product.AvailableSize) {
+      if (same_check(product.AvailableSize,user.PreferredSize)){
         product_weight += size_weight
       }
-      if (sort.SearchStrings(product.Productfeature, user_style)) <len(product.Productfeature) {
-        product_weight += style_weight
+      if product_weight > final_product{
+        final_product = product_weight
+          fmt.Println(product)
       }
-      */
-      if strings.Contains(strings.Join(product.AvailableColor, " "),"Red") {
-        product_weight += color_weight
-      }
-      fmt.Println(product_weight)
+      //fmt.Println(product_weight)
       product_weight = 0
-
     }
   }
-
-
-
-  /* strSlice := []string {"Texas","Washington","Montana","Alaska","Indiana","Ohio","Nevada"}
-  search:= "Texas"
-  sort.Strings(strSlice)
-   pos := sort.SearchStrings(strSlice,search)
-   fmt.Printf("Found %s at index %d in %v\n", search, pos, strSlice)
-*/
 }
