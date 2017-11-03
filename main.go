@@ -82,9 +82,10 @@ func main()  {
   color_weight := 20
   //style_weight := 30
   product_weight := 0
+  total_weight := 70 //total weight of product if the weight of product is = to this means we have found our relevant product
   //-------------------------- xx------------------------------------
 
-  //-------------reading user and product.json
+  //-------------reading user and product.json-----------------------
   user_data, _ := ioutil.ReadFile("user.json")
   product_data, _ := ioutil.ReadFile("product.json")
   //---------------------------xx-------------------------------------
@@ -92,7 +93,7 @@ func main()  {
   var final_product int
   var found_product []byte
 
-  //creating struct into variable
+  //-----------------creating struct into variable-------------------
   var products Product
   var user1 User
   //---------------------------xx-----------------------------------
@@ -121,6 +122,10 @@ func main()  {
         final_product = product_weight
         found_product, _ = json.Marshal(product) //now we parse the struct data of more weight product to json
       }
+      fmt.Println(product_weight)
+      if product_weight == total_weight{
+        break
+      }
       product_weight = 0
     }
   }
@@ -128,10 +133,10 @@ func main()  {
 
   //---------------------------starting http server-------------------------------------
   http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-  //setting header of / url as json
-  w.Header().Set("Content-Type", "application/json")
-  //writing the json data as string because it is of datatype byte and to write something on page then it should be string
-  fmt.Fprintf(w, string(found_product))
+    //setting header of / url as json
+    w.Header().Set("Content-Type", "application/json")
+    //writing the json data as string because it is of datatype byte and to write something on page then it should be string
+    fmt.Fprintf(w, string(found_product))
 })
   //listening to port 8080
   http.ListenAndServe(":8080", nil)
