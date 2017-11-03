@@ -8,15 +8,12 @@ import ("fmt" // for printing
 
 //function to check to slice and if their strings matches then it will return true, otherwise it will return false
 func same_check(slice1 []string, slice2 []string) bool {
-	var diff []string
-	same := false
-  //fmt.Print(slice1," : ")
-  //fmt.Println(slice2)
+	var same []string //for testing which strings matches
+  found := false
 	// Loop two times, first to find slice1 strings in slice2,
 	// second loop to find slice2 strings in slice1
 	for i := 0; i < 2; i++ {
 		for _, s1 := range slice1 {
-			found := false
 			for _, s2 := range slice2 {
 				if strings.Contains(s1, s2) {
 					found = true
@@ -25,8 +22,7 @@ func same_check(slice1 []string, slice2 []string) bool {
 			}
 			// String found. We add it to diff slice and make same to true
 			if found {
-				same = true
-				diff = append(diff, s1)
+				same = append(same, s1) //appending strings in same slice
 			}
 		}
 		// Swap the slices, only if it was the first loop
@@ -35,7 +31,7 @@ func same_check(slice1 []string, slice2 []string) bool {
 		}
 	}
   //fmt.Println(diff)
-	return same
+	return found
 }
 
 // User struct for user.json
