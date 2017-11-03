@@ -22,11 +22,11 @@
       "L"
     ],
     "productId": "1234",
-    "productfeature": [
-      "Length: Mini/Short",
-      "Fabric: Polyester",
-      "Occasion: Party"
-    ],
+    "productfeature": {
+      "Length": "Mini/Short",
+      "Fabric": "Polyester",
+      "Occasion": "Party"
+    },
     "productAttribute": {
       "Suitable For": "Western Wear",
       "Neck": "V Neck"
@@ -49,7 +49,7 @@
     "productTitle": "Vero Moda Women's Sheath White Dress",
     "price": 3455,
     "discountedPrice": 2340,
-    "discountPer": "20%",
+    "discountPer": "20",
     "marketplaceName": "Amazon",
     "affliateLink": "http://.........link",
     "availableColor": [
@@ -61,12 +61,12 @@
       "M",
       "L"
     ],
-    "productId": "1234",
-    "productfeature": [
-      "Length: Mini/Short",
-      "Fabric: Polyester",
-      "Occasion: Casual"
-    ],
+    "productId": "12345",
+    "productfeature": {
+      "Length": "Mini/Short",
+      "Fabric": "Polyester",
+      "Occasion": "Casual"
+    },
     "productAttribute": {
       "Suitable For": "Western Wear",
       "Neck": "Round"
@@ -89,7 +89,7 @@
     "productTitle": "Vero Moda Women's Sheath White Dress",
     "price": 2455,
     "discountedPrice": 1240,
-    "discountPer": "20%",
+    "discountPer": "20",
     "marketplaceName": "Flipkart",
     "affliateLink": "http://.........link",
     "availableColor": [
@@ -101,12 +101,12 @@
       "M",
       "L"
     ],
-    "productId": "1234",
-    "productfeature": [
-      "Length: Mini/Short",
-      "Fabric: Cotton",
-      "Occasion: Party"
-    ],
+    "productId": "123456",
+    "productfeature": {
+      "Length": "Mini/Short",
+      "Fabric": "Cotton",
+      "Occasion": "Party"
+    },
     "productAttribute": {
       "Suitable For": "Western Wear",
       "Neck": "Round"
