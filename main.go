@@ -3,9 +3,8 @@ package main
 import ("fmt" // for printing
   "encoding/json" // for encoding json to struct or we can se marshing and unmarshing
   "io/ioutil" //for reading and writing files
-  "net/http"
-  "strings"
-  "log") //for create server
+  "net/http" //for create server
+  "strings") //for strings funcs
 
 //function to check to slice and if their strings matches then it will return true, otherwise it will return false
 func same_check(slice1 []string, slice2 []string) bool {
@@ -13,8 +12,8 @@ func same_check(slice1 []string, slice2 []string) bool {
 	same := false
   //fmt.Print(slice1," : ")
   //fmt.Println(slice2)
-	// Loop two times, first to find slice1 strings not in slice2,
-	// second loop to find slice2 strings not in slice1
+	// Loop two times, first to find slice1 strings in slice2,
+	// second loop to find slice2 strings in slice1
 	for i := 0; i < 2; i++ {
 		for _, s1 := range slice1 {
 			found := false
@@ -24,7 +23,7 @@ func same_check(slice1 []string, slice2 []string) bool {
 					break
 				}
 			}
-			// String not found. We add it to return slice
+			// String found. We add it to diff slice and make same to true
 			if found {
 				same = true
 				diff = append(diff, s1)
@@ -153,6 +152,6 @@ func main()  {
     fmt.Fprintf(w, string(found_product))
 })
   //listening to port 8080
-  log.Fatal(http.ListenAndServe(":8080", nil))
+  http.ListenAndServe(":8080", nil)
   //------------------------------------------xx----------------------------------------
 }
